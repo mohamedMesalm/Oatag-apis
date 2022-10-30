@@ -13,4 +13,6 @@ urlpatterns = [
     path('link_edit', views.link_edit, name='link_edit'),
     path('product_edit', views.product_edit, name='product_edit'),
     path('IMAGE_edit', views.IMAGE_edit, name='IMAGE_edit'),
+
+    path('get_others/<str:pk>/', views.get_others, name='get_others'),
 ]

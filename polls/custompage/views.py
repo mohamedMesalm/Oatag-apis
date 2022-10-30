@@ -782,5 +782,43 @@ def product_edit(request):
 
 
 
+@api_view(['GET'])
+def get_others(request,pk):
+    JsonObject={}
+    user=User.objects.get(id=pk)
 
+    tit=title.objects.filter(user=user)
+    titserializer=titleSerializer(tit,many=True)
+    JsonObject['title']=titserializer.data
+
+    hea=header.objects.filter(user=user)
+    heaserializer=headerSerializer(hea,many=True)
+    JsonObject['header']=heaserializer.data
+
+    pro=product.objects.filter(user=user)
+    proserializer=productSerializer(pro,many=True)
+    JsonObject['product']=proserializer.data
+
+    ht=html.objects.filter(user=user)
+    htserializer=htmlSerializer(ht,many=True)
+    JsonObject['html']=htserializer.data
+
+    con=contact_form.objects.filter(user=user)
+    conserializer=contact_formSerializer(con,many=True)
+    JsonObject['contact_form']=conserializer.data
+
+    rss=RSS_Feed.objects.filter(user=user)
+    rssserializer=RSS_FeedSerializer(rss,many=True)
+    JsonObject['RSS_Feed']=rssserializer.data
+
+    lin=Link.objects.filter(user=user)
+    linserializer=LinkSerializer(lin,many=True)
+    JsonObject['Link']=linserializer.data
+
+    im=IMAGE.objects.filter(user=user)
+    imserializer=IMAGESerializer(im,many=True)
+    JsonObject['image']=imserializer.data
+
+
+    return Response(JsonObject)
 

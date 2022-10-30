@@ -16,7 +16,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework import status
 from rest_framework import generics
-
+import shortuuid
 import os
 
 
@@ -445,9 +445,9 @@ def UserProfile(request):
     jsonObject['user_id']=user.id
     jsonObject['job']=query.Job
     jsonObject['image']=img['image']
-    jsonObject['bio ']=query.Bio
-    jsonObject['location ']=query.Location
-    jsonObject['isVerified ']=query.Isverified
+    jsonObject['bio']=query.Bio
+    jsonObject['location']=query.Location
+    jsonObject['isVerified']=query.Isverified
     return Response(jsonObject)
 
 @api_view(['GET', 'POST','DELETE'])
@@ -478,7 +478,7 @@ def favoriteUser(request):
             for i in fav:
         
                 jsonObject={}
-                jsonObject['favorite_user']=i.favoriteUser_id
+                jsonObject['favoriteUser']=i.favoriteUser_id
                 user=User.objects.get(id=i.favoriteUser_id)
                 query=Profile.objects.get(user=user)
                 file=query.Image
@@ -547,8 +547,8 @@ def custombutton(request):
     jsonObject['user_id']=user.id
     jsonObject['icon']=img['image']
     jsonObject['isActive']=query.isActive
-    jsonObject['title ']=query.title
-    jsonObject['color ']=query.color
+    jsonObject['title']=query.title
+    jsonObject['color']=query.color
 
 
 
@@ -563,11 +563,14 @@ def Vcard_view(request):
         query=Vcard.objects.get(user=user)
         data = request.data
         if "image" in data :
+            import shortuuid
             code64=data['image']
             s = shortuuid.ShortUUID(alphabet="0123456789abcdef")
             otp = s.random(length=5)
-            new_image=convert_base64(code64,'_product_image',otp)
-            query.image=new_image 
+            new_image=convert_base64(code64,'_Vcard_image',otp)
+
+
+            query.image=new_image
         if "first_name" in data :
             query.first_name=data['first_name']
         if "last_name" in data :
@@ -627,15 +630,15 @@ def Vcard_view(request):
         jsonObject['user_id']=user.id
         jsonObject['first_name']=query.first_name
         jsonObject['last_name']=query.last_name
-        jsonObject['email ']=query.email
-        jsonObject['company ']=query.company
-        jsonObject['title ']=query.title
-        jsonObject['phone ']=query.phone
-        jsonObject['address ']=query.address
-        jsonObject['notes ']=query.notes
-        jsonObject['state ']=query.state
-        jsonObject['country ']=query.country
-        jsonObject['city ']=query.city
+        jsonObject['email']=query.email
+        jsonObject['company']=query.company
+        jsonObject['title']=query.title
+        jsonObject['phone']=query.phone
+        jsonObject['address']=query.address
+        jsonObject['notes']=query.notes
+        jsonObject['state']=query.state
+        jsonObject['country']=query.country
+        jsonObject['city']=query.city
         file=query.image
         obj=pic(file)
         serializer=picSerializer(obj)
@@ -649,7 +652,7 @@ def Vcard_view(request):
         file2=serializer.data
         jsonObject['vcf_file']=file2['file']
         
-        jsonObject['isActive ']=query.isActive
+        jsonObject['isActive']=query.isActive
         
 
        

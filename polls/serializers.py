@@ -67,12 +67,20 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 class DataSerializer(serializers.ModelSerializer):
-
+    color_list=serializers.SerializerMethodField()
     class Meta:
         model = data
-        fields = ['form_id', 'name', 'isActive', 'title', 'domain', 'username','color1','image']
+        fields = ['form_id', 'name', 'isActive', 'title', 'domain', 'username','color_list','image']
 
+    def get_color_list(self, obj):
+        a=[]
+        if obj.color1 != "":
+            a.append(obj.color1)
 
+        if obj.color2 != "":
+            a.append(obj.color2)    
+
+        return a    
 
 class PlatformSerializer(serializers.ModelSerializer):
     class Meta:
@@ -237,3 +245,6 @@ class productSerializer(serializers.ModelSerializer):
         
 
                
+
+
+      
