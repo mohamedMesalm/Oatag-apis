@@ -197,7 +197,7 @@ class ChangePasswordView(generics.UpdateAPIView):
                 # Check old password
                
             if not self.object.check_password(old_password):
-                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
             # set_password also hashes the password that the user will get
             self.object.set_password(password)
             self.object.save()
@@ -280,11 +280,20 @@ def social(request):
     if request.method == 'GET' : 
         try:
             user = request.user
-            query=data.objects.filter(user_id=user.id)
+            
             jsonObject={}
+
             jsonObject['user_id']=user.id
+
             anquery=Profile.objects.get(user=user)
+            
             jsonObject['isDirectOn']=anquery.isDirectOn
+            
+        
+
+          
+            query=data.objects.filter(user_id=user.id)    
+
             a=[]
             for i in query:
                 
@@ -309,7 +318,11 @@ def social(request):
                 serializer=fileSerializer(obj)
                 img=serializer.data
                 jsonObject2['image']=img['file']
-                a.append(jsonObject2)
+                if i.index_num=="1":
+                    a.insert(0,jsonObject2)
+
+                else:    
+                    a.append(jsonObject2)
 
             jsonObject['data']=a
             return Response({'socialLinks':jsonObject})
@@ -461,10 +474,12 @@ def favoriteUser(request):
         user=request.user
         fav=favorite.objects.filter(user_id=user.id)
         if fav.exists():
+            arr=[]
             for i in fav:
-                arr=[]
+        
                 jsonObject={}
                 jsonObject['favorite_user']=i.favoriteUser_id
+                user=User.objects.get(id=i.favoriteUser_id)
                 query=Profile.objects.get(user=user)
                 file=query.Image
                 obj=pic(file)
@@ -734,13 +749,19 @@ def get_socialOthers(request, pk):
             jsonObject['data']=serializer.data
             return Response({'socialLinks':jsonObject})
         else:
+
+            query=data.objects.filter(user_id=user.id).order_by('-index_num')
             serializer = DataSerializer(query, many=True)
             jsonObject['data']=serializer.data
-            return Response({'socialLinks':jsonObject})    
+            return Response({'socialLinks':jsonObject})
 
     except:
         message={'error':'this user has not any social links'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)   
+
+    # except:
+    #     message={'error':'this user has not any social links'}
+    #     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -777,12 +798,12 @@ def get_profileOthers(request, pk):
         img=serializer.data
         jsonObject['user_id']=user.id
         jsonObject['image']=img['image']
-        jsonObject['name ']=query.Name
+        jsonObject['name']=query.Name
         jsonObject['email']=user.email
         jsonObject['job']=query.Job
-        jsonObject['bio ']=query.Bio
-        jsonObject['location ']=query.Location
-        jsonObject['isVerified ']=query.Isverified
+        jsonObject['bio']=query.Bio
+        jsonObject['location']=query.Location
+        jsonObject['isVerified']=query.Isverified
         return Response(jsonObject)
     except:
         message={'error':'there is no user with this id'}
@@ -822,22 +843,30 @@ def get_platform_ById(request, pk):
 
 
 @api_view(['DELETE'])
+
+@permission_classes([IsAuthenticated])
+
 def deleteUser(request, pk):
+    user = request.user
+    if user.id==pk:
+        userForDeletion = User.objects.get(id=pk)
+        userForDeletion.delete()
 
-    userForDeletion = User.objects.get(id=pk)
-    userForDeletion.delete()
+        favoriteForDeletion=favorite.objects.filter(favoriteUser_id=pk)
+        if favoriteForDeletion.exists():
+            favoriteForDeletion.delete()
 
-    favoriteForDeletion=favorite.objects.filter(favoriteUser_id=pk)
-    if favoriteForDeletion.exists():
-        favoriteForDeletion.delete()
+        userFavoriteDeletion=favorite.objects.filter(user_id=pk)
+        if userFavoriteDeletion.exists():
+            userFavoriteDeletion.delete()
 
-    userFavoriteDeletion=favorite.objects.filter(user_id=pk)
-    if userFavoriteDeletion.exists():
-        userFavoriteDeletion.delete()
+        dataForDeletion=data.objects.filter(user_id=pk)
+        if dataForDeletion.exists():
+            dataForDeletion.delete()
 
-    dataForDeletion=data.objects.filter(user_id=pk)
-    if dataForDeletion.exists():
-        dataForDeletion.delete()
-
-    return Response('User was deleted')
+        return Response('User was deleted')
+    else:
+          
+        message={'message':'error'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST) 
     

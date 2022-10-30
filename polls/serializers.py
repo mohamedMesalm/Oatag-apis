@@ -90,14 +90,14 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+            raise serializers.ValidationError({"message": "Password fields didn't match."})
 
         return attrs
 
     def validate_old_password(self, value):
         user = self.context['request'].user
         if not user.check_password(value):
-            raise serializers.ValidationError({"old_password": "Old password is not correct"})
+            raise serializers.ValidationError({"message": "Old password is not correct"})
         return value
 
     def update(self, instance, validated_data):
@@ -175,53 +175,63 @@ class IMAGESerializer(serializers.ModelSerializer):
         fields='__all__'       
 
 class productSerializer(serializers.ModelSerializer):
-    list_of_image=serializers.SerializerMethodField()
+    images=serializers.SerializerMethodField()
     class Meta:
         model = product 
-        fields=('id','user','name','list_of_image','price','description','discount','payment','connection','report','info')
+        fields=('id','user','name','images','price','description','discount','payment','connection','report','info')
       
         
 
-    def get_list_of_image(self, obj):
+    def get_images(self, obj):
         a=[]
-        if obj.image1 != " ":
+        if obj.image1 != "":
             file=obj.image1
             new=pic(file)
             serializer=picSerializer(new)
             img=serializer.data
-            a.append(img['image'])
+            JsonObject={}
+            JsonObject['image1']=img['image']
+            a.append(JsonObject)
        
-        if obj.image2 != " ":
+        if obj.image2 != "":
             file=obj.image2
             print(pic(file))
             new=pic(file)
             serializer=picSerializer(new)
             img=serializer.data
-            a.append(img['image'])
+            JsonObject={}
+            JsonObject['image2']=img['image']
+            a.append(JsonObject)
        
 
-        if obj.image3 != " ":
+        if obj.image3 != "":
             file=obj.image3
             new=pic(file)
             serializer=picSerializer(new)
             img=serializer.data
-            a.append(img['image'])
+            JsonObject={}
+            JsonObject['image3']=img['image']
+            a.append(JsonObject)
        
 
-        if obj.image4 != " ":
+        if obj.image4 != "":
             file=obj.image4
             new=pic(file)
             serializer=picSerializer(new)
             img=serializer.data
-            a.append(img['image'])
+            JsonObject={}
+            JsonObject['image4']=img['image']
+            a.append(JsonObject)
        
 
-        if obj.image5 != " ":
+        if obj.image5 !="":
             file=obj.image5
             new=pic(file)
             serializer=picSerializer(new)
             img=serializer.data
-            a.append(img['image'])
+            JsonObject={}
+            JsonObject['image5']=img['image']
+            a.append(JsonObject)
 
         return a
         

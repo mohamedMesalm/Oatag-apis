@@ -211,8 +211,8 @@ def html_edit(request):
         try:
             data=request.data
             user=request.user
-            if 'body ' in data:
-                body =data['body ']
+            if 'body' in data:
+                body =data['body']
             else:
                 body=" "    
             if 'info' in data:
@@ -235,8 +235,8 @@ def html_edit(request):
             html_id=data['html_id']
             query=html.objects.filter(user=user,id=html_id)
             if query.exists():   
-                if 'body ' in data:
-                    body =data['body ']
+                if 'body' in data:
+                    body =data['body']
                 else:
                     body=query[0].body   
                 if 'info' in data:
@@ -276,16 +276,16 @@ def form_edit(request):
         try:
             data=request.data
             user=request.user
-            if 'subject ' in data:
-                subject =data['subject ']
+            if 'subject' in data:
+                subject =data['subject']
             else:
                 subject=" "    
             if 'content' in data:
                 content=data['content']
             else:
                 content=" "    
-            if 'From ' in data:
-                From =data['From ']
+            if 'From' in data:
+                From =data['From']
             else:
                 From=" "    
             if 'to' in data:
@@ -308,8 +308,8 @@ def form_edit(request):
             form_id=data['form_id']
             query=contact_form.objects.filter(user=user,id=form_id)
             if query.exists():   
-                if 'subject ' in data:
-                    subject =data['subject ']
+                if 'subject' in data:
+                    subject =data['subject']
                 else:
                     subject=query[0].subject   
                 if 'content' in data:
@@ -377,8 +377,8 @@ def feed_edit(request):
             query=RSS_Feed.objects.filter(user=user,id=feed_id)
             
             if query.exists():   
-                if 'rss_feed ' in data:
-                    rss_feed =data['rss_feed ']
+                if 'rss_feed' in data:
+                    rss_feed =data['rss_feed']
                 else:
                     rss_feed=query[0].rss_feed   
                       
@@ -428,8 +428,8 @@ def link_edit(request):
                 link=data['link']
             else:
                 link=" "    
-            if 'color ' in data:
-                color =data['color ']
+            if 'color' in data:
+                color =data['color']
             else:
                 color=" "    
             new_link=Link(user=user,image=new_image,link=link,color=color)
@@ -457,8 +457,8 @@ def link_edit(request):
                 else:
                     new_image=query[0].image  
 
-                if 'link ' in data:
-                    link =data['link ']
+                if 'link' in data:
+                    link =data['link']
                 else:
                     link=query[0].link   
                 if 'color' in data:
@@ -519,7 +519,7 @@ def IMAGE_edit(request):
             image_id=data['link_id']
             query=IMAGE.objects.filter(id=image_id,user=user)
             if query.exists():   
-                if 'image ' in data:
+                if 'image' in data:
                     code64=data['image']
                     s = shortuuid.ShortUUID(alphabet="0123456789abcdef")
                     otp = s.random(length=5)
@@ -607,30 +607,30 @@ def product_edit(request):
                 price=data['price']
             else:
                 price=" "    
-            if 'description ' in data:
-                description =data['description ']
+            if 'description' in data:
+                description =data['description']
             else:
                 description=" "    
 
-            if 'discount ' in data:
-                discount =data['discount ']
+            if 'discount' in data:
+                discount =data['discount']
             else:
                 discount=" " 
             
-            if 'payment ' in data:
-                payment =data['payment ']
+            if 'payment' in data:
+                payment =data['payment']
             else:
                 payment=" " 
-            if 'connection ' in data:
-                connection =data['connection ']
+            if 'connection' in data:
+                connection =data['connection']
             else:
                 connection=" "     
-            if 'report ' in data:
-                report =data['report ']
+            if 'report' in data:
+                report =data['report']
             else:
                 report=" "     
-            if 'info ' in data:
-                info =data['info ']
+            if 'info' in data:
+                info =data['info']
             else:
                 info=" "                  
             new_product=product(user=user,
@@ -710,24 +710,24 @@ def product_edit(request):
                 else:
                     new_image5=query[0].image                
 
-                if 'price ' in data:
-                    price =data['price ']
+                if 'price' in data:
+                    price =data['price']
                 else:
                     price=query[0].price   
-                if 'description ' in data:
-                    description =data['description ']
+                if 'description' in data:
+                    description =data['description']
                 else:
                     description=query[0].description   
-                if 'discount ' in data:
-                    discount =data['discount ']
+                if 'discount' in data:
+                    discount =data['discount']
                 else:
                     discount=query[0].discount           
-                if 'payment ' in data:
-                    payment =data['payment ']
+                if 'payment' in data:
+                    payment =data['payment']
                 else:
                     payment=query[0].payment   
-                if 'connection ' in data:
-                    connection =data['connection ']
+                if 'connection' in data:
+                    connection =data['connection']
                 else:
                     connection=query[0].connection           
                 if 'report' in data:
