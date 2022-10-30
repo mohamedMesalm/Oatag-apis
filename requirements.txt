@@ -29,7 +29,6 @@ google-cloud-storage==2.5.0
 google-crc32c==1.5.0
 google-resumable-media==2.4.0
 googleapis-common-protos==1.56.4
-grpcio==1.49.1
 grpcio-status==1.49.1
 httplib2==0.20.4
 idna==3.4
@@ -42,7 +41,6 @@ openpyxl==3.0.10
 Pillow==9.2.0
 proto-plus==1.22.1
 protobuf==4.21.7
-psycopg2==2.9.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 PyJWT==2.4.0
