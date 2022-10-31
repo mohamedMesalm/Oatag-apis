@@ -661,8 +661,8 @@ def Vcard_view(request):
         return Response(jsonObject)
 def write_vcard(f, vcard):
     
-    full_path = os.path.join('media', f)
-    # full_path = os.path.join('/home/hamzaekhwan/buisness/media', f)
+    # full_path = os.path.join('media', f)
+    full_path = os.path.join('/home/oatag/public_html/Oatag-apis/media', f)
     # print(full_path)
     with open(full_path, 'w') as f:
         f.writelines([l + '\n' for l in vcard])
